@@ -1,0 +1,90 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="defaultHref" (click)="dismiss()">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </ion-back-button>
+
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="shareSession()">
+        <ion-icon slot="icon-only" name="share"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="session" class="ion-padding">
+    <ion-list>
+      <ion-item>
+        <ion-label>
+          <h3>{{session.name}}</h3>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <h3>Fecha ejecución: {{session.order['data'].fechaejecucion}}</h3>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <h3>Rut Cliente: {{ session.order['data'].client_order.rut }}</h3>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <h3>Nombre Cliente: {{ session.order['data'].client_order.nombre }}</h3>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <h3>Medio de pago: {{ session.order['data'].mediodepago }}</h3>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <h3>Monto: {{ session.order['data'].monto }}</h3>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <h3>MAC: {{ session.order['data'].client_residence.mac }}</h3>
+         </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <h3>PPPoE: {{ session.order['data'].client_residence.pppoe }}</h3>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <h3>Vlan: Pendiente. En desarrollo</h3>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+            <h3>Comentario: {{ session.order['data'].comentario}}</h3>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-item>
+      <ion-button shape="round" (click)="takePhoto()"> Agregar Foto
+        <ion-icon size="medium" name="add-circle-sharp"></ion-icon>
+      </ion-button>
+    </ion-item>
+    <ion-item  *ngFor='let item of images'>
+      <ion-img  style="width: 300px; height: 300px;" [src]="item"></ion-img>
+    </ion-item>
+    <ion-item >
+      <ion-button shape="round" (click)="confirmarSolicitud(session.order['data'])">Confirmar solicitud
+        <ion-icon size="medium" name="checkmark-sharp"></ion-icon>
+      </ion-button>
+    </ion-item>
+
+
+
+  </div>
+
+
+</ion-content>

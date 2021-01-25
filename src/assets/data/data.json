@@ -1,0 +1,94 @@
+{
+  "schedule": [
+    {
+      "groups": [
+        {
+          "time": "Antes 11:00 AM",
+          "sessions": [
+            {
+              "name": "12342 - Instalacion Duo (Deco)",
+              "location": "Las garzas 123124",
+              "timeStart": "Confirmada",
+              "timeEnd": "Cerrada",
+              "tracks": ["Urgente"],
+              "id": "1"
+            }
+          ]
+        },
+        {
+          "time": "Antes 2:00 PM",
+          "sessions": [
+            {
+              "name": "12345 - Instalacion Duo (Deco)",
+              "location": "Santa Luisa 1245",
+              "timeStart": "Por confirmar",
+              "timeEnd": "En Proceso",
+              "tracks": ["Prioridad alta"],
+              "id": "1"
+            }
+          ]
+        },
+        {
+          "time": "Todo el dia",
+          "sessions": [
+            {
+              "name": "12346 - Reparacion",
+              "location": "Lo marcoleta 493",
+              "timeStart": "Por confirmar",
+              "timeEnd": "Abierta",
+              "tracks": ["Prioridad media"],
+              "id": "1"
+            }
+          ]
+        },
+        {
+          "time": "Despues 6 PM",
+          "sessions": [
+            {
+              "name": "12348 - Desconfiguracion",
+              "location": "San martin 531",
+              "timeStart": "Confirmada",
+              "timeEnd": "Abierta",
+              "tracks": ["Prioridad baja"],
+              "id": "1"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+
+  "speakers": [
+    {
+      "name": "Burt Bear",
+      "profilePic": "/assets/img/speakers/bear.jpg",
+      "instagram": "ionicframework",
+      "twitter": "ionicframework",
+      "about": "Burt is a Bear. Burt's interests include poetry, dashing space heroes, and lions.",
+      "title": "Software Engineer",
+      "location": "Everywhere",
+      "email": "burt@example.com",
+      "phone": "+1-541-754-3010",
+      "id": "1"
+    }
+  ],
+
+  "tracks": [
+    {
+      "name": "Urgente",
+      "icon": "logo-angular"
+    },
+    {
+      "name": "Prioridad alta",
+      "icon": "logo-angular"
+    },
+    {
+      "name": "Prioridad media",
+      "icon": "logo-angular"
+    },
+    {
+      "name": "Prioridad baja",
+      "icon": "logo-angular"
+    }
+  ]
+}
