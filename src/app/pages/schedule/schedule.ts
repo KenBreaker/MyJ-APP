@@ -11,7 +11,7 @@ import { UserData } from '../../providers/user-data';
   templateUrl: 'schedule.html',
   styleUrls: ['./schedule.scss'],
 })
-export class SchedulePage implements OnInit{
+export class SchedulePage{
   // Gets a reference to the list element
   @ViewChild('scheduleList', { static: true }) scheduleList: IonList;
   access_token: string;
@@ -40,15 +40,14 @@ export class SchedulePage implements OnInit{
     public toastController: ToastController
   ) { }
 
-  ngOnInit(){
-    this.getAccessToken()
-    this.ios = this.config.get('mode') === 'ios';
-  }
   ionViewWillEnter() {
     this.getAccessToken()
     this.ios = this.config.get('mode') === 'ios';
   }
 
+  ionViewDidEnter(){
+    this.updateSchedule();
+  }
   sendPostRequest() {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -77,6 +76,7 @@ export class SchedulePage implements OnInit{
       this.confData.getTimeline(this.dayIndex, "", this.excludeTracks, this.segment,access_token).subscribe((data: any) => {
         this.shownSessions = data.shownSessions;
         this.groups = data.groups;
+
       });
       this.ios = this.config.get('mode') === 'ios';
     });
@@ -87,7 +87,6 @@ export class SchedulePage implements OnInit{
     if (this.scheduleList) {
       this.scheduleList.closeSlidingItems();
     }
-
     this.confData.getTimeline(this.dayIndex, this.queryText, this.excludeTracks, this.segment,access_token).subscribe((data: any) => {
       this.shownSessions = data.shownSessions;
       this.groups = data.groups;

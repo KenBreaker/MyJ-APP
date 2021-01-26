@@ -14,7 +14,7 @@ import { ToastController } from '@ionic/angular';
   styleUrls: ['./finalizar-orden.component.scss'],
 })
 export class FinalizarOrdenPage{
-  @Input() session: string;
+  @Input() session: any;
   isFavorite = false;
   defaultHref = `/app/tabs/schedule`;
   access_token = '';

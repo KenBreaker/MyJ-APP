@@ -35,7 +35,7 @@ export class ConferenceData {
 
   load(access_token?): any {
     if(access_token){
-      this.sendPostRequest(access_token)
+      this.sendGetName(access_token)
       if (this.data) {
         return of(this.data);
       } else {
@@ -53,8 +53,7 @@ export class ConferenceData {
 
   }
 
-  sendPostRequest(access_token) {
-
+  sendGetName(access_token){
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
@@ -62,10 +61,30 @@ export class ConferenceData {
         })
       };
 
-    this.http.get("http://10.19.11.9:3005/api/scheduler/cl-orders?date_init=2020-12-10&date_end=2020-12-15&nombre_encargado=jorge", httpOptions)
+    this.http.get("http://10.19.11.9:3005/api/users/current", httpOptions)
+      .subscribe(response => {
+        //this.presentToast("Se han actualizado las ordenes correctamente!","success");
+        console.log(response.name)
+        this.sendGetRequest(access_token,response.name)
+       }, error => {
+        //this.presentToast("Fallo al intentar actualizar ordenes!","danger");
+        console.log(error);
+      });
+  }
+
+  sendGetRequest(access_token,tech_name) {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': 'Bearer ' + access_token
+        })
+      };
+    this.http.get("http://10.19.11.9:3005/api/scheduler/cl-orders?date_init=2020-12-10&date_end=2020-12-15&nombre_encargado="+tech_name, httpOptions)
       .subscribe(response => {
         //this.presentToast("Se han actualizado las ordenes correctamente!","success");
         let i = 1
+        console.log(response)
         this.data = {
           schedule:[{
             groups:[]
