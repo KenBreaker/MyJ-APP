@@ -5,6 +5,9 @@ import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { ScheduleFilterPage } from '../schedule-filter/schedule-filter';
 import { ConferenceData } from '../../providers/conference-data';
 import { UserData } from '../../providers/user-data';
+import { DatePicker } from '@ionic-native/date-picker/ngx';
+import * as moment from 'moment';
+import { IfStmt } from '@angular/compiler';
 
 @Component({
   selector: 'page-schedule',
@@ -24,6 +27,7 @@ export class SchedulePage{
   groups: any = [];
   confDate: string;
   showSearchbar: boolean;
+  dateInit = "";
   show = false;
   constructor(
     public alertCtrl: AlertController,
@@ -37,17 +41,19 @@ export class SchedulePage{
     public config: Config,
     public httpClient: HttpClient,
     public userData: UserData,
-    public toastController: ToastController
+    public toastController: ToastController,
+    public datePicker: DatePicker
   ) { }
 
+  ngOnInit(){
+    this.getAccessToken()
+  }
+  
   ionViewWillEnter() {
     this.getAccessToken()
     this.ios = this.config.get('mode') === 'ios';
   }
 
-  ionViewDidEnter(){
-    this.updateSchedule();
-  }
   sendPostRequest() {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -56,7 +62,7 @@ export class SchedulePage{
         })
       };
 
-    this.httpClient.get("http://10.19.11.9:3005/api/users/current", httpOptions)
+    this.httpClient.get("http://10.19.11.9:3003/api/users/current", httpOptions)
       .subscribe(data => {
         this.presentToast("Se han actualizado las ordenes correctamente!","success");
 
@@ -73,7 +79,10 @@ export class SchedulePage{
       if (this.scheduleList) {
         this.scheduleList.closeSlidingItems();
       }
-      this.confData.getTimeline(this.dayIndex, "", this.excludeTracks, this.segment,access_token).subscribe((data: any) => {
+      if(this.dateInit){
+        this.dateInit = moment(this.dateInit).format('YYYY-MM-DD')
+      }
+      this.confData.getTimeline(this.dayIndex, "", this.excludeTracks, this.segment,access_token,this.dateInit).subscribe((data: any) => {
         this.shownSessions = data.shownSessions;
         this.groups = data.groups;
 
@@ -82,12 +91,26 @@ export class SchedulePage{
     });
   }
 
+  showCalendar(){
+    console.log("aca")
+    this.datePicker.show({
+      date: new Date(),
+      mode: 'date'
+    }).then(
+      date => console.log('Got date: ', date),
+      err => console.log('Error occurred while getting date: ', err)
+    );
+  }
+
   updateSchedule(access_token?) {
     // Close any open sliding items when the schedule updates
     if (this.scheduleList) {
       this.scheduleList.closeSlidingItems();
     }
-    this.confData.getTimeline(this.dayIndex, this.queryText, this.excludeTracks, this.segment,access_token).subscribe((data: any) => {
+    if(this.dateInit){
+      this.dateInit = moment(this.dateInit).format('YYYY-MM-DD')
+    }
+    this.confData.getTimeline(this.dayIndex, this.queryText, this.excludeTracks, this.segment,access_token,this.dateInit).subscribe((data: any) => {
       this.shownSessions = data.shownSessions;
       this.groups = data.groups;
     });
@@ -95,6 +118,7 @@ export class SchedulePage{
 
   update(){
     this.getAccessToken()
+
   }
 
   async presentFilter() {

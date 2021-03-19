@@ -15,6 +15,7 @@ import { FormsModule } from '@angular/forms';
 import { CallNumber } from '@ionic-native/call-number/ngx';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { Camera } from '@ionic-native/camera/ngx';
+import { DatePicker } from '@ionic-native/date-picker/ngx';
 
 @NgModule({
   imports: [
@@ -29,7 +30,7 @@ import { Camera } from '@ionic-native/camera/ngx';
     })
   ],
   declarations: [AppComponent],
-  providers: [InAppBrowser, SplashScreen, StatusBar,CallNumber,NativeStorage,Camera],
+  providers: [InAppBrowser, SplashScreen, StatusBar,CallNumber,NativeStorage,Camera,DatePicker],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

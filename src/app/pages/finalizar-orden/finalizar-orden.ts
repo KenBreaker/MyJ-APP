@@ -19,6 +19,7 @@ export class FinalizarOrdenPage{
   defaultHref = `/app/tabs/schedule`;
   access_token = '';
   images = [];
+  comentario = "";
   photo = '';
   options: CameraOptions = {
     quality: 100,
@@ -64,28 +65,17 @@ export class FinalizarOrdenPage{
   }
 
   updateEstadoTicket(value,data){
+    this.sendGetName(this.access_token,data)
     this.sendPut("estadoticket",value,data)
+    this.dismiss()
   }
 
-  sendPut(field,value,order) {
+  sendTracking(value,user,order) {
     let postData = {
-      "id":order['id'],
-      "idtipo":order['tipo']['id'],
-      "prioridad":order['prioridad'],
-      "disponibilidad":order['disponibilidad'],
-      "comentario":order['comentario'],
-      "fechaejecucion":order['fechaejecucion'],
-      "estadocliente":order['estadocliente'],
-      "estadoticket":order['estadoticket'],
-      "mediodepago":order['mediodepago'],
-      "monto":order['monto'],
-      "created_by":order['created_by']['email'],
-      "encargado":order['encargado']['rut'],
-      "client_order":order['client_order']['rut'],
-      "domicilio":order['client_residence']['id']
-
+      "comentario":value,
+      "user_email": user,
+      "order_id":order['id']
   }
-  postData[field] = value
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -94,11 +84,70 @@ export class FinalizarOrdenPage{
         })
       };
 
-
-    this.httpClient.put("http://10.19.11.9:3005/api/scheduler/order",postData, httpOptions)
+    this.httpClient.post("http://10.19.11.9:3003/api/scheduler/seguimientos",postData, httpOptions)
       .subscribe(data => {
-        console.log(data)
-        this.presentToast("Solicitud enviada correctamente","success")
+        //this.presentToast("Comentario añadido correctamente","success")
+       }, error => {
+        this.presentToast("Error, al enviar solicitud!","danger")
+        console.log(error);
+      });
+  }
+
+  sendGetName(access_token,data){
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': 'Bearer ' + access_token
+        })
+      };
+
+    this.httpClient.get("http://10.19.11.9:3003/api/users/current", httpOptions)
+      .subscribe(response => {
+        //this.presentToast("Se han actualizado las ordenes correctamente!","success");
+        let temp:any;
+        temp = response
+        if(this.comentario){
+          this.sendTracking(this.comentario,temp.email,data)
+        } else {
+          this.sendTracking("Solicitud de Aprobacion",temp.email,data)
+        }
+        
+       }, error => {
+        //this.presentToast("Fallo al intentar actualizar ordenes!","danger");
+        console.log(error);
+      });
+  }
+
+  sendPut(field,value,order) {
+    let postData = {
+      "id":order['id'],
+      "idtipo":order['tipo']['id'],
+      "prioridad":order['prioridad']['id'],
+      "disponibilidad":order['disponibilidad'],
+      "comentario":order['comentario'],
+      "fechaejecucion":order['fechaejecucion'],
+      "estadocliente":order['estadocliente']['id'],
+      "estadoticket":order['estadoticket']['id'],
+      "mediodepago":order['mediodepago']['id'],
+      "monto":order['monto'],
+      "created_by":order['created_by']['email'],
+      "encargado":order['encargado']['rut'],
+      "client_order":order['client_order']['rut'],
+      "domicilio":order['client_residence']['id']
+      
+  }
+  postData[field] = value
+  console.log(postData)
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': 'Bearer ' + this.access_token
+        })
+      };
+
+    this.httpClient.put("http://10.19.11.9:3003/api/scheduler/order",postData, httpOptions)
+      .subscribe(data => {
+        this.presentToast("Solicitud de aprobacion enviada correctamente","success")
        }, error => {
         this.presentToast("Error, al enviar solicitud!","danger")
         console.log(error);
@@ -119,7 +168,7 @@ export class FinalizarOrdenPage{
         {
           text: 'Confirmar',
           handler: () => {
-            this.updateEstadoTicket("En Aprobación",data)
+            this.updateEstadoTicket("6",data)
           }
         }
       ]

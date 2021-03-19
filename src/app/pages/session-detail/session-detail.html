@@ -37,26 +37,26 @@
          <ion-label>
           <h3>Estado Cliente: {{session.timeStart}}</h3>
          </ion-label>
-          <ion-select *ngIf="session.timeEnd=='En Aprobación'" disabled [(ngModel)]="estadocliente" (ionChange)="updateEstadoCliente(estadocliente,session.order['data']);" placeholder="Editar" cancelText="Cancelar" okText="Confirmar">
-            <ion-select-option value="Estado 1">Estado 1</ion-select-option>
-            <ion-select-option value="Estado 2">Estado 2</ion-select-option>
+          <ion-select *ngIf="session.timeEnd=='En Aprobacion'" disabled [(ngModel)]="estadocliente" (ionChange)="updateEstadoCliente(estadocliente,session.order['data']);" placeholder="Editar" cancelText="Cancelar" okText="Confirmar">
+            <ion-select-option value="3">Sin factibilidad</ion-select-option>
+            <ion-select-option value="7">Sin contacto</ion-select-option>
           </ion-select>
-          <ion-select *ngIf="session.timeEnd!='En Aprobación'" [(ngModel)]="estadocliente" (ionChange)="updateEstadoCliente(estadocliente,session.order['data']);" placeholder="Editar" cancelText="Cancelar" okText="Confirmar">
-            <ion-select-option value="Estado 1">Estado 1</ion-select-option>
-            <ion-select-option value="Estado 2">Estado 2</ion-select-option>
+          <ion-select *ngIf="session.timeEnd!='En Aprobacion'" [(ngModel)]="estadocliente" (ionChange)="updateEstadoCliente(estadocliente,session.order['data']);" placeholder="Editar" cancelText="Cancelar" okText="Confirmar">
+            <ion-select-option value="3">Sin factibilidad</ion-select-option>
+            <ion-select-option value="7">Sin contacto</ion-select-option>
           </ion-select>
       </ion-item>
       <ion-item>
         <ion-label>
           <h3>Estado Ticket: {{ session.timeEnd }}</h3>
         </ion-label>
-          <ion-select *ngIf="session.timeEnd=='En Aprobación'" disabled [(ngModel)]="estadoticket" (ionChange)="updateEstadoTicket(estadoticket,session.order['data']);" placeholder="Editar" cancelText="Cancelar" okText="Confirmar">
-            <ion-select-option value="En Proceso">En Proceso</ion-select-option>
-            <ion-select-option value="Cerrado no terminado">Cerrado no terminado</ion-select-option>
+          <ion-select *ngIf="session.timeEnd=='En Aprobacion'" disabled [(ngModel)]="estadoticket" (ionChange)="updateEstadoTicket(estadoticket,session.order['data']);" placeholder="Editar" cancelText="Cancelar" okText="Confirmar">
+            <ion-select-option value="2">En Proceso</ion-select-option>
+            <ion-select-option value="5">Cerrado no terminado</ion-select-option>
           </ion-select>
-          <ion-select *ngIf="session.timeEnd!='En Aprobación'" [(ngModel)]="estadoticket" (ionChange)="updateEstadoTicket(estadoticket,session.order['data']);" placeholder="Editar" cancelText="Cancelar" okText="Confirmar">
-            <ion-select-option value="En Proceso">En Proceso</ion-select-option>
-            <ion-select-option value="Cerrado no terminado">Cerrado no terminado</ion-select-option>
+          <ion-select *ngIf="session.timeEnd!='En Aprobacion'" [(ngModel)]="estadoticket" (ionChange)="updateEstadoTicket(estadoticket,session.order['data']);" placeholder="Editar" cancelText="Cancelar" okText="Confirmar">
+            <ion-select-option value="2">En Proceso</ion-select-option>
+            <ion-select-option value="5">Cerrado no terminado</ion-select-option>
           </ion-select>
       </ion-item>
       <ion-item>
@@ -76,15 +76,15 @@
       </ion-item>
       <ion-item>
         <ion-label>
-          <h3>Medio de pago: {{ session.order['data'].mediodepago }}</h3>
+          <h3>Medio de pago: {{ session.order['data'].mediodepago.descripcion }}</h3>
         </ion-label>
-        <ion-select *ngIf="session.timeEnd=='En Aprobación'" disabled [(ngModel)]="mediodepago" (ionChange)="updateMediodepago(mediodepago,session.order['data']);" placeholder="Editar" cancelText="Cancelar" okText="Confirmar">
-          <ion-select-option value="Webpay">Webpay</ion-select-option>
-          <ion-select-option value="Efectivo">Efectivo</ion-select-option>
+        <ion-select *ngIf="session.timeEnd=='En Aprobacion'" disabled [(ngModel)]="mediodepago" (ionChange)="updateMediodepago(mediodepago,session.order['data']);" placeholder="Editar" cancelText="Cancelar" okText="Confirmar">
+          <ion-select-option value="1">Webpay</ion-select-option>
+          <ion-select-option value="2">Efectivo</ion-select-option>
         </ion-select>
-        <ion-select *ngIf="session.timeEnd!='En Aprobación'"  [(ngModel)]="mediodepago" (ionChange)="updateMediodepago(mediodepago,session.order['data']);" placeholder="Editar" cancelText="Cancelar" okText="Confirmar">
-          <ion-select-option value="Webpay">Webpay</ion-select-option>
-          <ion-select-option value="Efectivo">Efectivo</ion-select-option>
+        <ion-select *ngIf="session.timeEnd!='En Aprobacion'"  [(ngModel)]="mediodepago" (ionChange)="updateMediodepago(mediodepago,session.order['data']);" placeholder="Editar" cancelText="Cancelar" okText="Confirmar">
+          <ion-select-option value="1">Webpay</ion-select-option>
+          <ion-select-option value="2">Efectivo</ion-select-option>
         </ion-select>
       </ion-item>
       <ion-item>
@@ -96,10 +96,10 @@
         <ion-label>
           <div>
             <h3>MAC: {{ session.order['data'].client_residence.mac }}</h3>
-            <ion-button *ngIf="session.timeEnd=='En Aprobación'" disabled shape="round" (click)="cambiarMAC(session.order['data'])">Editar MAC
+            <ion-button *ngIf="session.timeEnd=='En Aprobacion'" disabled shape="round" (click)="cambiarMAC(session.order['data'])">Editar MAC
               <ion-icon size="medium" name="construct-outline"></ion-icon>
             </ion-button>
-            <ion-button *ngIf="session.timeEnd!='En Aprobación'" shape="round" (click)="cambiarMAC(session.order['data'])">Editar MAC
+            <ion-button *ngIf="session.timeEnd!='En Aprobacion'" shape="round" (click)="cambiarMAC(session.order['data'])">Editar MAC
               <ion-icon size="medium" name="construct-outline"></ion-icon>
             </ion-button>
           </div>
@@ -137,10 +137,10 @@
       </ion-item>
       <ion-item>
         <ion-label>
-          <ion-button disabled  *ngIf="session.timeEnd=='En Aprobación'"  (click)="presentModal()" expand="block" color="primary">Solicitar aprobación
+          <ion-button disabled  *ngIf="session.timeEnd=='En Aprobacion'"  (click)="presentModal()" expand="block" color="primary">Solicitar aprobación
             <ion-icon name="checkmark-sharp"></ion-icon>
           </ion-button>
-          <ion-button *ngIf="session.timeEnd!='En Aprobación'"  (click)="presentModal()" expand="block" color="primary">Solicitar aprobación
+          <ion-button *ngIf="session.timeEnd!='En Aprobacion'"  (click)="presentModal()" expand="block" color="primary">Solicitar aprobación
             <ion-icon name="checkmark-sharp"></ion-icon>
           </ion-button>
         </ion-label>

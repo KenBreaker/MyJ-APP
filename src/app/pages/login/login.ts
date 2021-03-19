@@ -58,7 +58,7 @@ export class LoginPage{
       postData.password = password
     }
 
-    this.httpClient.post("http://10.19.11.9:3005/api/auth/login", postData, httpOptions)
+    this.httpClient.post("http://10.19.11.9:3003/api/auth/login", postData, httpOptions)
       .subscribe(data => {
         this.login.access_token = (data["token"]["access_token"]);
         this.userData.login(this.login.username,this.login.access_token);

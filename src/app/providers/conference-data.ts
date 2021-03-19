@@ -8,6 +8,7 @@ import { UserData } from './user-data';
 import { Session } from 'protractor';
 import { stringify } from '@angular/compiler/src/util';
 import { access } from 'fs';
+import * as moment from "moment"; 
 
 @Injectable({
   providedIn: 'root'
@@ -33,9 +34,9 @@ export class ConferenceData {
     public toastController: ToastController,
     public user: UserData) {}
 
-  load(access_token?): any {
+  load(access_token?,dateInit?): any {
     if(access_token){
-      this.sendGetName(access_token)
+      this.sendGetName(access_token,dateInit)
       if (this.data) {
         return of(this.data);
       } else {
@@ -53,7 +54,7 @@ export class ConferenceData {
 
   }
 
-  sendGetName(access_token){
+  sendGetName(access_token,dateInit?){
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
@@ -61,30 +62,36 @@ export class ConferenceData {
         })
       };
 
-    this.http.get("http://10.19.11.9:3005/api/users/current", httpOptions)
+    this.http.get("http://10.19.11.9:3003/api/users/current", httpOptions)
       .subscribe(response => {
         //this.presentToast("Se han actualizado las ordenes correctamente!","success");
-        console.log(response.name)
-        this.sendGetRequest(access_token,response.name)
+        let temp:any;
+        temp = response
+        this.sendGetRequest(access_token,temp.name,dateInit)
        }, error => {
         //this.presentToast("Fallo al intentar actualizar ordenes!","danger");
         console.log(error);
       });
   }
 
-  sendGetRequest(access_token,tech_name) {
-
+  sendGetRequest(access_token,tech_name,date_init?) {
+    let today = moment().format("YYYY-MM-DD");
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
         'Authorization': 'Bearer ' + access_token
         })
       };
-    this.http.get("http://10.19.11.9:3005/api/scheduler/cl-orders?date_init=2020-12-10&date_end=2020-12-15&nombre_encargado="+tech_name, httpOptions)
+    if(date_init){
+      date_init = date_init
+    } else {
+      date_init = today
+    }
+    
+    this.http.get("http://10.19.11.9:3003/api/scheduler/cl-orders?date_init="+date_init+"&date_end="+date_init+"&nombre_encargado="+tech_name, httpOptions)
       .subscribe(response => {
-        //this.presentToast("Se han actualizado las ordenes correctamente!","success");
+        this.presentToast("Se han actualizado las ordenes correctamente!","success");
         let i = 1
-        console.log(response)
         this.data = {
           schedule:[{
             groups:[]
@@ -96,13 +103,12 @@ export class ConferenceData {
           }]
         };
         for (let order of Object.entries(response)){
-          //console.log(order[1])
           this.data.schedule[0].groups.push({ time:order[1].disponibilidad, sessions:[
             {
               name:"ID: " + order[1].id + " -- " + order[1].tipo.descripcion + " -- " +order[1].client_residence.direccion,
               location:order[1].client_residence.comuna,
-              timeStart:order[1].estadocliente,
-              timeEnd:order[1].estadoticket,
+              timeStart:order[1].estadocliente.descripcion,
+              timeEnd:order[1].estadoticket.descripcion,
               email: order[1].client_order.email,
               tracks:["Prioridad alta"],
               id: stringify(i),
@@ -112,7 +118,7 @@ export class ConferenceData {
           i += 1
         }
        }, error => {
-        //this.presentToast("Fallo al intentar actualizar ordenes!","danger");
+        this.presentToast("Fallo al intentar actualizar ordenes!","danger");
         console.log(error);
       });
   }
@@ -153,9 +159,10 @@ export class ConferenceData {
     queryText = '',
     excludeTracks: any[] = [],
     segment = 'all',
-    access_token
+    access_token,
+    dateInit?
   ) {
-    return this.load(access_token).pipe(
+    return this.load(access_token,dateInit).pipe(
       map((data: any) => {
         const day = data.schedule[dayIndex];
         day.shownSessions = 0;
@@ -241,7 +248,7 @@ export class ConferenceData {
   async presentToast(text,valid) {
     const toast = await this.toastController.create({
       message: text,
-      duration: 3000,
+      duration: 1500,
       position: 'middle',
       animated: true,
       color: valid

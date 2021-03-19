@@ -94,13 +94,13 @@ export class SessionDetailPage {
     let postData = {
       "id":order['id'],
       "idtipo":order['tipo']['id'],
-      "prioridad":order['prioridad'],
+      "prioridad":order['prioridad']['id'],
       "disponibilidad":order['disponibilidad'],
       "comentario":order['comentario'],
       "fechaejecucion":order['fechaejecucion'],
-      "estadocliente":order['estadocliente'],
-      "estadoticket":order['estadoticket'],
-      "mediodepago":order['mediodepago'],
+      "estadocliente":order['estadocliente']['id'],
+      "estadoticket":order['estadoticket']['id'],
+      "mediodepago":order['mediodepago']['id'],
       "monto":order['monto'],
       "created_by":order['created_by']['email'],
       "encargado":order['encargado']['rut'],
@@ -117,8 +117,7 @@ export class SessionDetailPage {
         })
       };
 
-
-    this.httpClient.put("http://10.19.11.9:3005/api/scheduler/order",postData, httpOptions)
+    this.httpClient.put("http://10.19.11.9:3003/api/scheduler/order",postData, httpOptions)
       .subscribe(data => {
         console.log(data)
         this.presentToast("Campo modificado exitosamente","success")
@@ -146,7 +145,7 @@ export class SessionDetailPage {
       };
 
 
-    this.httpClient.put("http://10.19.11.9:3005/api/scheduler/residence",postData, httpOptions)
+    this.httpClient.put("http://10.19.11.9:3003/api/scheduler/residence",postData, httpOptions)
       .subscribe(data => {
         console.log(data)
         this.presentToast("Campo modificado exitosamente","success")
